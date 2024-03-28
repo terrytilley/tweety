@@ -32,7 +32,9 @@ function MyApp({
   return (
     <ThemeProvider attribute="class">
       <SessionProvider session={session}>
-        <div className={`font-sans ${inter.variable} bg-[#101010]`}>
+        <div
+          className={`font-sans ${inter.variable} bg-white dark:bg-[#101010]`}
+        >
           {getLayout(<Component {...pageProps} />)}
         </div>
       </SessionProvider>
