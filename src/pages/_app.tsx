@@ -1,28 +1,43 @@
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { type AppType } from "next/app";
-import { Inter } from "next/font/google";
+import type { ReactElement, ReactNode } from 'react';
+import { type Session } from 'next-auth';
+import type { AppProps } from 'next/app';
+import type { NextPage } from 'next';
+import { ThemeProvider } from 'next-themes';
+import { SessionProvider } from 'next-auth/react';
+import { Inter } from 'next/font/google';
 
-import { api } from "~/utils/api";
+import { api } from '~/utils/api';
 
-import "~/styles/globals.css";
+import '~/styles/globals.css';
 
 const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
-const MyApp: AppType<{ session: Session | null }> = ({
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps<{ session: Session | null }> & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
+}: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
-    <SessionProvider session={session}>
-      <main className={`font-sans ${inter.variable}`}>
-        <Component {...pageProps} />
-      </main>
-    </SessionProvider>
+    <ThemeProvider attribute="class">
+      <SessionProvider session={session}>
+        <div className={`font-sans ${inter.variable} bg-[#101010]`}>
+          {getLayout(<Component {...pageProps} />)}
+        </div>
+      </SessionProvider>
+    </ThemeProvider>
   );
-};
+}
 
 export default api.withTRPC(MyApp);
