@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "db:cli": "tsx prisma/cli.ts",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "dev": "next dev",
