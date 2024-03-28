@@ -25,14 +25,14 @@ export default function NavDropdown() {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right border border-[#212121] rounded-2xl bg-white dark:bg-[#181818] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-[#383839]">
+          <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right border border-[#f5f5f5] dark:border-[#212121] rounded-2xl bg-white dark:bg-[#181818] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-[#d9d9d9] dark:divide-[#383839]">
             <div className="py-1">
               <Menu.Item>
                 {({ active }) => (
                   <a
                     href="#"
                     className={clsx(
-                      active ? '' : 'text-white',
+                      active ? '' : 'font-medium text-black dark:text-white',
                       'block px-4 py-2 text-sm',
                     )}
                   >
@@ -49,7 +49,7 @@ export default function NavDropdown() {
                     <button
                       type="submit"
                       className={clsx(
-                        active ? '' : 'text-white',
+                        active ? '' : 'font-medium text-black dark:text-white',
                         'block w-full px-4 py-2 text-left text-sm',
                       )}
                     >
