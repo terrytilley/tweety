@@ -11,6 +11,10 @@ export default {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
+      colors: {
+        navbarBlack: 'rgba(16, 16, 16, 0.85)',
+        navbarWhite: 'rgba(255, 255, 255, 0.85)',
+      },
     },
   },
   plugins: [formsPlugin, headlessuiPlugin],
