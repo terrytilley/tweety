@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Fragment } from 'react';
+import { signOut } from 'next-auth/react';
 import { Menu, Transition } from '@headlessui/react';
 import { Bars2Icon } from '@heroicons/react/24/outline';
 
@@ -43,21 +44,20 @@ export default function NavDropdown() {
             </div>
 
             <div className="py-1">
-              <form method="POST" action="#">
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      type="submit"
-                      className={clsx(
-                        active ? '' : 'font-medium text-black dark:text-white',
-                        'block w-full px-4 py-2 text-left text-sm',
-                      )}
-                    >
-                      Log out
-                    </button>
-                  )}
-                </Menu.Item>
-              </form>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    type="submit"
+                    className={clsx(
+                      active ? '' : 'font-medium text-black dark:text-white',
+                      'block w-full px-4 py-2 text-left text-sm',
+                    )}
+                    onClick={() => signOut()}
+                  >
+                    Log out
+                  </button>
+                )}
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>

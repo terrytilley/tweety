@@ -1,16 +1,24 @@
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import type { InferGetServerSidePropsType } from 'next';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import { type ReactElement } from 'react';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import superjson from 'superjson';
 
-import Layout from '~/components/layout';
-
+import { db } from '~/server/db';
+import { appRouter } from '~/server/api/root';
+import { getServerAuthSession } from '~/server/auth';
 import { api } from '~/utils/api';
+import { requireAuth } from '~/utils/auth';
+import Layout from '~/components/layout';
 
 export default function Home(
   _props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const hello = api.post.hello.useQuery({ text: 'from tRPC' });
+
+  const { data: sessionData } = useSession();
 
   return (
     <>
@@ -52,6 +60,12 @@ export default function Home(
             </Link>
           </div>
 
+          {sessionData && (
+            <p className="text-center text-2xl text-white">
+              <span>Logged in as {sessionData.user?.name}</span>
+            </p>
+          )}
+
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
               {hello.data ? hello.data.greeting : 'Loading tRPC query...'}
@@ -67,8 +81,18 @@ Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = (async ({ locale }) => {
-  if (!locale) return { props: {} };
+export const getServerSideProps = requireAuth(async (ctx) => {
+  if (!ctx.locale) return { props: {} };
 
-  return { props: {} };
-}) satisfies GetServerSideProps;
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { db, session: await getServerAuthSession(ctx) },
+    transformer: superjson,
+  });
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  };
+});
