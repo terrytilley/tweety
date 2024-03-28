@@ -12,6 +12,7 @@ import { getServerAuthSession } from '~/server/auth';
 import { api } from '~/utils/api';
 import { requireAuth } from '~/utils/auth';
 import Layout from '~/components/layout';
+import CreatePost from '~/components/CreatePost';
 
 export default function Home(
   _props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -29,6 +30,8 @@ export default function Home(
       </Head>
 
       <div>
+        <CreatePost user={sessionData?.user} />
+
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
